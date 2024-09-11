@@ -1,0 +1,31 @@
+{
+    "TECNI": {
+                  "emailRemitente"    : "formacionvirtualcsf",
+                  "servidorRemitente" : "gmail.com",
+                  "nombreRemitente"   : "formacionvirtualcsf@sena.edu.co",
+                  "asunto"            : "Asignacion fichas formacion - TECNICO",
+                  "template"          : "correoInstructores.html"
+                },
+    "BILIN": {
+                  "emailRemitente"    : "formacionvirtualcsf",
+                  "servidorRemitente" : "gmail.com",
+                  "nombreRemitente"   : "formacionvirtualcsf@sena.edu.co",
+                  "asunto"            : "Asignacion fichas formacion - BILINGUISMO",
+                  "template"          : "correoInstructores.html"
+                },
+    "TRANS": {
+                  "emailRemitente"    : "formacionvirtualcsf",
+                  "servidorRemitente" : "gmail.com",
+                  "nombreRemitente"   : "formacionvirtualcsf@sena.edu.co",
+                  "asunto"            : "Asignacion fichas formacion - TRANSVERSALES",
+                  "template"          : "correoInstructores.html"
+                },
+    "PRODU": {
+                  "emailRemitente"    : "formacionvirtualcsf",
+                  "servidorRemitente" : "gmail.com",
+                  "nombreRemitente"   : "formacionvirtualcsf@sena.edu.co",
+                  "asunto"            : "Asignacion fichas formacion - PRODUCTIVA ",
+                  "template"          : "correoInstructores.html"
+                }
+  }
+
