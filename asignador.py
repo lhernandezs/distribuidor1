@@ -7,13 +7,21 @@ from salida         import Salida
 from distribuidor   import Distribuidor
 from entradaSalida  import EntradaSalida
 from modelo         import Ficha, Instructor
+
 class Asginador:
 
-    ENCABEZADOS = ["NOMBRE", "NIVEL", "PROGRAMA", "NFICHA", "FECHA_INICIO", "APRENDICES", "INS_TECNICO", "COMPETENCIA"]
+    ENCABEZADOS = ["NOMBRE"         , 
+                   "NIVEL"          , 
+                   "PROGRAMA"       , 
+                   "NFICHA"         , 
+                   "FECHA_INICIO"   , 
+                   "APRENDICES"     , 
+                   "INS_TECNICO"    , 
+                   "COMPETENCIA"]
 
     def __init__(self):
-        self._fichas                = []    # obtiene las fichas que se van a asignar
-        self._instructores          = []    # obtiene los destalle de los instructores
+        self._fichas                = []    # contiene las fichas que se van a asignar
+        self._instructores          = []    # contiene los destalle de los instructores
         self._nInsXCompetencias     = {}    # calculara el numero de instructores totales y de planta por competencia
         self._fichasXCompetencia    = {}    # calculara las fichas por competencia
 
