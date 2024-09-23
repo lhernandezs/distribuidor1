@@ -49,11 +49,11 @@ class Robot:
                                     'ANGELICA JANETH RODRIGUEZ ALONSO', 
                                     'MARITZABEL MONTEALEGRE RAMIREZ'
                                      ]:
-                fechaInicioPeriodo = '21-ago-2024'
-                fechaFinPeriodo    = '29-sep-2024'
+                fechaInicioPeriodo = '30-sep-2024'
+                fechaFinPeriodo    = '31-oct-2024'
             else:
-                fechaInicioPeriodo = '28-ago-2024'
-                fechaFinPeriodo    = '29-sep-2024'
+                fechaInicioPeriodo = '30-sep-2024'
+                fechaFinPeriodo    = '31-oct-2024'
                 
             if tipo == "TRANS":
                 descripcionCompetencia = ""

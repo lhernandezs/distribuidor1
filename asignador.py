@@ -21,7 +21,7 @@ class Asginador:
 
     def __init__(self):
         self._fichas                = []    # contiene las fichas que se van a asignar
-        self._instructores          = []    # contiene los destalle de los instructores
+        self._instructores          = []    # contiene los destalles de los instructores
         self._nInsXCompetencias     = {}    # calculara el numero de instructores totales y de planta por competencia
         self._fichasXCompetencia    = {}    # calculara las fichas por competencia
 
@@ -60,6 +60,7 @@ class Asginador:
             for ficha in self._fichas:
                 if ficha.competencias[0:3] == competencia:
                     self._fichasXCompetencia[competencia].append((ficha.nficha,ficha.aprendices))
+                # OJO: esto para cuando hay 2 competencias que programar en la ficha
                 if len(ficha.competencias) == 9 and ficha.competencias[6:9] == competencia:
                     self._fichasXCompetencia[competencia].append((ficha.nficha,ficha.aprendices))
 

@@ -154,6 +154,7 @@ if __name__ == "__main__":
     }
 
     distribuidor = Distribuidor(numInstructores= 6, numInsPlanta= 1, fichas = fichas)
+
     distribucion = distribuidor.distribuirFichasEntreInstructores()
     for instructor in distribucion.keys():
         print(instructor, distribucion[instructor], " aprendices: ", distribuidor.sumaDeAprendices(distribucion[instructor]))

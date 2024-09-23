@@ -18,5 +18,6 @@ class Capacidad:
         return self._tope
 
 if __name__ == '__main__':
-    cap = Capacidad(tipo_competencia="TRA", vinculacion="Contrat")
+    cap = Capacidad(tipo_competencia="TRA", vinculacion="Contrato")
     print(cap.getTope())
+

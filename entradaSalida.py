@@ -50,7 +50,6 @@ class EntradaSalida:
 
             try:
                hojaSalida = archivo[nameHoja]
-#               hojaSalida.delete_rows(2, 1000)
 
             except:
                 hojaSalida = archivo.create_sheet(title=nameHoja)
