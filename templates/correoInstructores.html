@@ -1,93 +1,51 @@
 {% extends "base.html" %}
 
 {% block texto %}
-
 <p>
     Instructor<br>
     <b>{{ datosCorreo.instructor.nombre }}</b><br>
     {{ datosCorreo.instructor.correo }}<br>
-    {{ datosCorreo.instructor.correo2 }}
-
+    {% if datosCorreo.instructor.correo2 %}
+         {{datosCorreo.instructor.correo2}}
+    {% endif %}
 </p>
-<br>
-<br>
+<br><br>
 <p>Asunto:<b>{{ asunto }}</b></p>
 <br>
-<p>Cordial saludo, esperamos se encuentre muy bien,</p>
-<br>
+<p>Cordial saludo, esperamos se encuentre muy bien,</p><br>
 <p>La Coordinación de Formación Virtual del CSF, le asigna como instructor de las competencias: {{ datosCorreo.descripcion_competencia }} para las siguientes fichas en la ejecución de la formación profesional modalidad virtual 2024. Agradezcemos, establecer contacto para concertar las actividades correspondientes con el equipo Ejecutor de acuerdo con las fechas de formación indicadas, con el fin de que se pueda adelantar la ejecución de las actividades del componente, de acuerdo con la Guía de orientaciones para la Formación en Ambientes Virtuales de Aprendizaje –AVA GFPI–G-014 Versión 04 
 </p>
 <p>Así mismo, es importante resaltar que la programación puede llegar a tener modificaciones, inclusiones y/o retiros de fichas. Si llegan a presentarse casos adicionales de PQRS, o cualquier caso que se requiera por necesidad del servicio, le serán notificados en su momento
-</p>
-<br>
-</div>
+</p><br>
 <div align=center>
     <table border="1" bordercolor="666633" cellpadding="1" cellspacing="0">
         <tr>
-            <th width=96>
-                <p><b>Nivel</b></p>
-            </th>
-            <th width=308>
-                <p><b>Programa</b></p>
-            </th>
-            <th width=96>
-                <p><b>Ficha</b></p>
-            </th>
-            <th width=96>
-                <p><b>Fecha Inicio Ficha</b></p>
-            </th>
-            <th width=96>
-                <p><b>Aprendices</b></p>
-            </th>
-            {% if datosCorreo.instructor.competencia not in ['TEC', 'PRO'] %}
-                <th width=96>
-                    <p><b>Instructor Técnico</b></p>
-                </th>
+            {% for (nombre_col, ancho_col) in [('Nivel', 96),('Programa', 308),('Ficha', 96),('Fecha Inicio Ficha', 96),('Aprendices',96)] %}
+                <th width={{ancho_col}}><p><b>{{nombre_col}}</b></p></th>
+            {% endfor %}
+            {% if 'TRANSVERSALES' in asunto or 'BILINGUISMO' in asunto %}
+                <th width=200><p><b>Instructor Técnico</b></p></th>
             {% endif %}
-            {% if datosCorreo.instructor.competencia not in ['TEC', 'PRO','BIL'] %}
-            <th width=96>
-                    <p><b>Fecha Inicio</b></p>
-                </th>
-                <th width=96>
-                    <p><b>Fecha Fin</b></p>
-                </th>
+            {% if 'TRANSVERSALES' in asunto %}
+                <th width=96><p><b>Fecha Inicio</b></p></th>
+                <th width=96><p><b>Fecha Fin</b></p></th>
             {% endif %}
-            </tr>
+        </tr>
 
         {% for ficha in datosCorreo.fichas %}
-        <tr>
-            <td width=96>
-                <p align=center>{{ ficha[0] }}</p>
-            </td>
-            <td width=308>
-                <p align=center>{{ ficha[1] }}</p>
-            </td>
-            <td width=96>
-                <p align=center>{{ ficha[2] }}</p>
-            </td>
-            <td width=96>
-                <p align=center>{{ ficha[3] }}</p>
-            </td>
-            <td width=96>
-                <p align=center>{{ ficha[4] }}</p>
-            </td>
-            {% if datosCorreo.instructor.competencia not in ['TEC', 'PRO'] %}
-                <td width=96>
-                    <p align=center>{{ ficha[5] }}</p>
-                </td>
-            {% endif %}
-            {% if datosCorreo.instructor.competencia not in ['TEC', 'PRO','BIL'] %}
-                <td width=96>
-                    <p align=center>{{ ficha[6] }}</p>
-                </td>
-                <td width=96>
-                    <p align=center>{{ ficha[7] }}</p>
-                </td>
-            {% endif %}
+            <tr>
+                {% for (dato, ancho_col) in [(ficha[0], 96),(ficha[1], 308),(ficha[2], 96),(ficha[3], 96),(ficha[4],96)] %}
+                    <td width={{ancho_col}}><p align=center>{{dato}}</p></td>
+                {% endfor %}
+                {% if 'TRANSVERSALES' in asunto or 'BILINGUISMO' in asunto %}
+                    <td width=200><p align=center>{{ ficha[5] }}</p></td>
+                {% endif %}
+                {% if 'TRANSVERSALES' in asunto %}
+                    <td width=96><p align=center>{{ ficha[6] }}</p></td>
+                    <td width=96><p align=center>{{ ficha[7] }}</p></td>
+                {% endif %}
             </tr>
-
         {% endfor %}
-
     </table>
 </div>
 <br>

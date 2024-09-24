@@ -5,8 +5,8 @@ import json
 from email.message          import EmailMessage
 from email.headerregistry   import Address
 from jinja2                 import Environment, select_autoescape, FileSystemLoader
-
 from modelo                 import DatosCorreo
+
 class Correo:
     # variable de entorno para la API de jinja2
     ENV = Environment(loader=FileSystemLoader("templates"), autoescape=select_autoescape())
@@ -61,26 +61,26 @@ if __name__ == '__main__':
                                                 nombre                  = 'LEONARDO'                ,
                                                 vinculacion             = 'Planta'                  , 
                                                 correo                  = 'leo66@homtail.com'       , 
-                                                correo2                 = 'lhernandezs331@gmail.com', 
+                                                correo2                 = None                      , 
                                                 competencia             = 'COM'
                                             ),
                                 fichas     = [
-                                                [   'TECNOLOGO'             ,
-                                                    'ADSO'                  ,
-                                                    '9999'                  ,
-                                                    '15-SEP-2022'           ,
-                                                    '98'                    ,
-                                                    'MARIA'                 ,
-                                                    '23-mar-2024'           ,
+                                                [   'TECNOLOGO'                             ,
+                                                    'ANALISIS Y DESARROLLO DE SOFTWARE'     ,
+                                                    '999239'                                ,
+                                                    '15-SEP-2022'                           ,
+                                                    '98'                                    ,
+                                                    'MARIA'                                 ,
+                                                    '23-mar-2024'                           ,
                                                     '22-may-2024'
                                                 ],
-                                                [   'TECNICO'               ,
-                                                    'CONTABILIDAD'          ,
-                                                    '9998'                  ,
-                                                    '15-SEP-2022'           ,
-                                                    '98'                    ,
-                                                    'MARI0'                 ,
-                                                    '23-mar-2024'           ,
+                                                [   'TECNICO'                               ,
+                                                    'CONTABILIDAD'                          ,
+                                                    '999128'                                ,
+                                                    '15-SEP-2022'                           ,
+                                                    '98'                                    ,
+                                                    'MARI0 de LAS PAVAS Y OTROS APellidos'  ,
+                                                    '23-mar-2024'                           ,
                                                     '22-may-2024'
                                                 ],
                                             ],

@@ -2,7 +2,6 @@ import openpyxl as op
 import os.path
 
 from pydantic   import BaseModel
-from modelo     import Instructor, Ficha
 
 # esta es una clase de la capa de infraestructua, lee y escribe datos en un archivo de excel
 class EntradaSalida:
@@ -15,7 +14,6 @@ class EntradaSalida:
         primeraFila = hoja.iter_rows(min_row=0,  max_row=1, values_only=True)
         encabezados = [b for b in  [a for a in primeraFila][0]]
         numeros = range(len(encabezados)) 
-
         return  dict(zip(encabezados, numeros))
 
     # lee los datos una hoja de excel y retorna una lista de objetos segun el modelo(BaseModel)
@@ -47,7 +45,6 @@ class EntradaSalida:
     def writeSheet(self, nameArchivo: str, nameHoja: str, encabezados: list, filas: list):
         try:
             archivo = op.load_workbook(os.path.join('datos', nameArchivo))
-
             try:
                hojaSalida = archivo[nameHoja]
 
@@ -67,11 +64,12 @@ class EntradaSalida:
         finally:
             archivo.close
 
+from modelo     import Instructor, Ficha
 if __name__ == "__main__":
-    # instructores = EntradaSalida().getData('consolidado.xlsx', 'instructores', Instructor)
-    # for fila in instructores:
-    #     print(fila)
-    fichas = EntradaSalida().getData('consolidado.xlsx', 'fichasD', Ficha)
-    for fila in fichas:
+    instructores = EntradaSalida().getData('consolidado.xlsx', 'instructores', Instructor)
+    for fila in instructores:
         print(fila)
+    # fichas = EntradaSalida().getData('consolidado.xlsx', 'fichasD', Ficha)
+    # for fila in fichas:
+    #     print(fila)
     # EntradaSalida().writeSheet('consolidado.xlsx', 'salida', ['cedula','nombre','competencia'], [[890,"Ins1","MAT"],[891,"Ins2","ETI"]])
