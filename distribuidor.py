@@ -70,19 +70,27 @@ class Distribuidor:
         else:
             return True
 
-    # retorna la clave del instructor que tiene asignada la ficha, sino retorna None
+    # retorna la clave del instructor que tiene asignada la ficha, sino esta asignada retorna None
     def getKeyInstructorEnDistribucion(self, nFicha):
-        for keyInstructor in self._distribucion.keys():
-            if nFicha in [nFicha for (nFicha, aprendices) in self._distribucion[keyInstructor]]:
-                return keyInstructor
-        return None
+        try:
+            return list(filter(lambda i: nFicha == i[1], [(m,self._distribucion[m][n][0]) for n in range(len(self._distribucion[0])) for m in range(len(self._distribucion))]))[0][0]
+        except:
+            return None    
+        # for keyInstructor in self._distribucion.keys():
+        #     if nFicha in [nFicha for (nFicha, aprendices) in self._distribucion[keyInstructor]]:
+        #         return keyInstructor
+        # return None
     
     # retorna True si la ficha esta asignada a una lista de instructores
     def fichaAsignadaAInstructores(self, tFicha, instructores):
-        for instructor in instructores:
-            if tFicha in self._distribucion[instructor]: 
-                return True
-        return False
+        try:
+            return True & list(filter(lambda i: tFicha == i[1], [(m,self._distribucion[m][n]) for n in range(len(self._distribucion[0])) for m in instructores]))[0][0]
+        except:
+            return False 
+        # for instructor in instructores:
+        #     if tFicha in self._distribucion[instructor]: 
+        #         return True
+        # return False
 
     # intercambia las fichas de los instructores de Planta que tienen mas de una ficha 9999XXX
     def intercambiarFichas9999(self, instructoresPorMejorar, instructoresPlanta):
@@ -119,12 +127,13 @@ class Distribuidor:
      
     # es el metodo principal de la clase; devuelve un diccionario con los indices de los instructores como clave y las tuplas (nFicha, aprendices) como valores
     def distribuirFichasEntreInstructores(self):
-        # se revisa si hay instructores de planta y si es así crea una ficha 9999999 por cada instructor para asignarles y luego descontarla
+        # si hay instructores de planta se crea una ficha 9999XXX por cada instructor para asignarles y luego descontarla
         if self._numInsPlanta > 0:
             sumAprendices = self.sumaDeAprendices(self._fichas.items())
             aprendicesPorInstructor = sumAprendices // self._numInstructores
-            for num in (range(self._numInsPlanta)):
-                self._fichas[9999001+num] = int(aprendicesPorInstructor * 0.25)
+            [self._fichas.update([(9999001+num, int(aprendicesPorInstructor * 0.25))]) for num in range(self._numInsPlanta)]        
+            # for num in (range(self._numInsPlanta)):
+            #     self._fichas[9999001+num] = int(aprendicesPorInstructor * 0.25)
 
         # carga en la variable de instancia (diccionario) self._distribucion las fichas -- 1ra distribucion
         for ficha in self.ordenarFichasPorAprendices(self._fichas.items()):
@@ -153,8 +162,8 @@ if __name__ == "__main__":
                 2675823:41, 2675824:33, 2675825:42, 2675826:44, 2675827:44, 2675828:37, 2675829:37, 2675830:45, 2675831:40, 2675832:40, 2675911:40, 
     }
 
-    distribuidor = Distribuidor(numInstructores= 6, numInsPlanta= 1, fichas = fichas)
+    distribuidor = Distribuidor(numInstructores= 8, numInsPlanta= 4, fichas = fichas)
 
     distribucion = distribuidor.distribuirFichasEntreInstructores()
-    for instructor in distribucion.keys():
-        print(instructor, distribucion[instructor], " aprendices: ", distribuidor.sumaDeAprendices(distribucion[instructor]))
+    for instructor in distribucion:
+        print(instructor, distribucion[instructor])
