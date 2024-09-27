@@ -1,9 +1,6 @@
-numInsPlanta = 3
-fichas = {234543: 50}
+lista = [3, 1, 4, 7, 2, 8, 9, 11, 10] 
 
-[fichas.update([(9999001+num, int(100 * 0.25))]) for num in range(numInsPlanta)]
+filtrada = [ elemento for elemento in lista if (lambda elemento: elemento % 2) ].pop(0)
 
-# [print(x*2) for x in [0, 2, 4]]
-
-print(fichas)
+print(filtrada)
 

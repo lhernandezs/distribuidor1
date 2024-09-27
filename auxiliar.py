@@ -10,23 +10,23 @@ def calcularInstructorPorCompetencia(instructores: list) -> dict:
             nInsXCompetencias[instructor.competencia] = [(numIns + 1), (numInsPlanta + planta)]
     return nInsXCompetencias
 
-from modelo import Instructor
-instructores = [
-                Instructor(cedula       = '999',
-                           nombre       = 'dfjasjdkj',
-                           vinculacion  = 'Contrato',
-                           correo       = 'leo66@hotmail.com',
-                           competencia  = 'DER'),
-                Instructor(cedula       = '999',
-                           nombre       = 'dfjasjdkj',
-                           vinculacion  = 'Contrato',
-                           correo       = 'leo66@hotmail.com',
-                           competencia  = 'COM'),
-                Instructor(cedula       = '999',
-                           nombre       = 'dfjasjdkj',
-                           vinculacion  = 'Planta',
-                           correo       = 'leo66@hotmail.com',
-                           competencia  = 'COM'),
-                ]
+# from modelo import Instructor
+# instructores = [
+#                 Instructor(cedula       = '999',
+#                            nombre       = 'dfjasjdkj',
+#                            vinculacion  = 'Contrato',
+#                            correo       = 'leo66@hotmail.com',
+#                            competencia  = 'DER'),
+#                 Instructor(cedula       = '999',
+#                            nombre       = 'dfjasjdkj',
+#                            vinculacion  = 'Contrato',
+#                            correo       = 'leo66@hotmail.com',
+#                            competencia  = 'COM'),
+#                 Instructor(cedula       = '999',
+#                            nombre       = 'dfjasjdkj',
+#                            vinculacion  = 'Planta',
+#                            correo       = 'leo66@hotmail.com',
+#                            competencia  = 'COM'),
+#                 ]
 
-print(calcularInstructorPorCompetencia(instructores))
+# print(calcularInstructorPorCompetencia(instructores))
