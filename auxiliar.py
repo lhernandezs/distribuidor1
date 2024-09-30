@@ -10,6 +10,7 @@ def calcularInstructorPorCompetencia(instructores: list) -> dict:
             nInsXCompetencias[instructor.competencia] = [(numIns + 1), (numInsPlanta + planta)]
     return nInsXCompetencias
 
+# Esto es para probar esta funcion
 # from modelo import Instructor
 # instructores = [
 #                 Instructor(cedula       = '999',

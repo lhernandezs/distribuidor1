@@ -25,66 +25,43 @@ class Asginador:
         self._nInsXCompetencias     = {}    # calculara el numero de instructores totales y de planta por competencia
         self._fichasXCompetencia    = {}    # calculara las fichas por competencia
 
-    # carga los datos de las fichas a asignar desde el archivo consolidado.xlsx
-    def getFichas(self):
-        self._fichas = EntradaSalida().getData('consolidado.xlsx', 'fichasD', Ficha)
-
-    # carga los datos los instructores  desde el archivo consolidado.xlsx y llena la variable de instancioa self._nInsXCompetencias
-    def getInstructores(self):
-        self._instructores = EntradaSalida().getData('consolidado.xlsx', 'instructores', Instructor)
-        self._nInsXCompetencias = calcularInstructorPorCompetencia(self._instructores)
-
-        print("Numero de instructores por competencia ----------------------")
-        print(self._nInsXCompetencias)
+    def getDatos(self, hoja, modelo):
+        return EntradaSalida().getData('consolidado.xlsx', hoja, modelo)
 
     # consigue un objeto ficha por el nficha, si no existe retorna None
     def getFichaXnficha(self, nficha):
-        for ficha in self._fichas:
-            if ficha.nficha == nficha:
-                return ficha
-        return None
+        try:
+            return [ficha for ficha in self._fichas if ficha.nficha == nficha].pop()
+        except:
+            return None
 
     # consigue un objeto instructor por el nombre, si no existe retorna None
     def getInstructorXNombre(self, nombre):
-        for instructor in self._instructores:
-            if instructor.nombre == nombre:
-                return instructor
-        return None
+        try:
+            return [instructor for instructor in self._instructores if instructor.nombre == nombre].pop()
+        except:
+            return None
 
     # carga la variable de instancia self._fichasXCompetencia (diccionario) con las competencias y luego las fichas (desde self._fichas)
     def setFichasXCompetencia(self): 
-        for competencia in self._nInsXCompetencias.keys():
-            self._fichasXCompetencia[competencia] = []
-
+        self._fichasXCompetencia ={competencia : [] for competencia in self._nInsXCompetencias.keys()}
         for competencia in self._nInsXCompetencias:
             for ficha in self._fichas:
-                if ficha.competencias[0:3] == competencia:
-                    self._fichasXCompetencia[competencia].append((ficha.nficha,ficha.aprendices))
-                # OJO: esto para cuando hay 2 competencias que programar en la ficha
-                if len(ficha.competencias) == 9 and ficha.competencias[6:9] == competencia:
-                    self._fichasXCompetencia[competencia].append((ficha.nficha,ficha.aprendices))
+                [self._fichasXCompetencia[competencia].append((ficha.nficha,ficha.aprendices)) for comp in ficha.competencias.split() if comp == competencia]
 
-        print("Fichas por competencia --------------------------------------")
-        for competencia in self._fichasXCompetencia:
-            print(competencia, ": ", self._fichasXCompetencia[competencia])
-
+        [print(competencia, ": ", self._fichasXCompetencia[competencia]) for competencia in self._fichasXCompetencia]
 
     # prepara los datos para llamar al Distribuidor
     def getDatosXDistribuidor(self, competencia):
-        numInstructores = self._nInsXCompetencias[competencia][0]       # numero de instructores por competencia  
-        numInsPlanta    = self._nInsXCompetencias[competencia][1]       # numero de instructores de planta por competencia
-        fichas = {}                                                     # diccionario de listas de tuplas (nficha, aprendices) por competencia
-        for tficha in self._fichasXCompetencia[competencia]:
-            fichas[tficha[0]] = tficha[1]
-        if fichas != {}:
-            return (numInstructores, numInsPlanta, fichas)
-        else:
-            return (None, None, None)
+        numInstructores = self._nInsXCompetencias[competencia][0]                                       # numero de instructores por competencia  
+        numInsPlanta    = self._nInsXCompetencias[competencia][1]                                       # numero de instructores de planta por competencia
+        fichas = {nFicha: aprendices for (nFicha, aprendices) in self._fichasXCompetencia[competencia]} # diccionario de fichas a distribuir
+        return (numInstructores, numInsPlanta, fichas) if fichas != {} else (None, None, None)
     
     # escribe la hoja salida del archivo consolidado.xlsx
     def escribirSalida(self, indice, nFichas):
         instructor = self._instructores[indice]
-        filas =[]
+        filas = []
         for nficha in nFichas:
             ficha = self.getFichaXnficha(nficha)
             filas.append([
@@ -101,40 +78,35 @@ class Asginador:
 
     # coloca las fichas para la salida
     def asignarFichas(self):
-        self.getFichas()
-        self.getInstructores()
+        self._fichas = self.getDatos('fichasD', Ficha)
+        self._instructores = self.getDatos('instructores', Instructor)
+        self._nInsXCompetencias = calcularInstructorPorCompetencia(self._instructores)
         self.setFichasXCompetencia()
 
+        # para cada una de las competencias donde hay instructores
         for competencia in self._nInsXCompetencias.keys():
             (numInstructores, numInsPlanta, fichas) = self.getDatosXDistribuidor(competencia) 
             if fichas is not None:
-                    indice = 0
-                    indicesInstructoresPlanta   = [] 
-                    indicesInstructoresContrato = []
-                    for instructor in self._instructores:
-                        if instructor.competencia == competencia:
-                            if instructor.vinculacion == "Planta":
-                                indicesInstructoresPlanta.append(indice)       # adiciona el indice a la lista de instructores de planta
-                            else:
-                                indicesInstructoresContrato.append(indice)     # adiciona el indice a la lista de instructores de contrato
-                        indice += 1
+                distribucion = Distribuidor(numInstructores, numInsPlanta, fichas).distribuirFichasEntreInstructores()
 
-                    distribucion = Distribuidor(numInstructores, numInsPlanta, fichas).distribuirFichasEntreInstructores()
+                indice = 0
+                indicesInstructoresPlanta   = [] 
+                indicesInstructoresContrato = []
+                for instructor in self._instructores:
+                    if instructor.competencia == competencia:
+                        indicesInstructoresPlanta.append(indice) if instructor.vinculacion == "Planta" else indicesInstructoresContrato.append(indice)
+                    indice += 1
 
-                    keysInstructoresDePlanta  = []                             # se llenara con las claves en la distribucion de instructores que tienen fichas > 9999000
-                    for keyInstructor in distribucion.keys():                  # recorremos la distribucion de fichas entre los indices de los instructores
-                        for tFicha in distribucion[keyInstructor]:             
-                            if tFicha[0] > 9999000:
-                                keysInstructoresDePlanta.append(keyInstructor) # incluye la clave en la distribucion de los instructores de planta en una lista 
-                                distribucion[keyInstructor].remove(tFicha)     # remueve de la distribucion las tuplas de las fichas > 9999000
+                keysInstructoresDePlanta  = []                             # se llenara con las claves en la distribucion de instructores que tienen fichas > 9999000
+                for keyInstructor in distribucion.keys():                  # recorremos la distribucion de fichas entre los indices de los instructores
+                    for tFicha in distribucion[keyInstructor]:             
+                        if tFicha[0] > 9999000:
+                            keysInstructoresDePlanta.append(keyInstructor) # incluye la clave en la distribucion de los instructores de planta en una lista 
+                            distribucion[keyInstructor].remove(tFicha)     # remueve de la distribucion las tuplas de las fichas > 9999000
 
-                    for keyInstructor in distribucion.keys():
-                        if keyInstructor in keysInstructoresDePlanta:
-                            indice = indicesInstructoresPlanta.pop(0)          # selecciona y remueve el siguiente indice de la lista de instructores de planta
-                        else:
-                            indice = indicesInstructoresContrato.pop(0)        # selecciona y remueve el siguiente indice de la lista de instructores de contrato
-                        nFichas = [nficha for (nficha, aprendices) in distribucion[keyInstructor]]    
-                        self.escribirSalida(indice, nFichas)
+                for keyInstructor in distribucion.keys():
+                    indice = indicesInstructoresPlanta.pop(0) if keyInstructor in keysInstructoresDePlanta else indicesInstructoresContrato.pop(0)
+                    self.escribirSalida(indice, [nficha for (nficha, aprendices) in distribucion[keyInstructor]])
             else:
                 Salida("No hay fichas para la competencia" + competencia)
 
